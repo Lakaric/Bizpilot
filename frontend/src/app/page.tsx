@@ -10,6 +10,8 @@ import FAQ from "@/components/landing/FAQ";
 import CTA from "@/components/landing/CTA";
 import Footer from "@/components/landing/Footer";
 
+import TrustBar from "@/components/TrustBar";
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-primary">
@@ -17,6 +19,7 @@ export default function Home() {
 
       <main>
         <Hero />
+        <TrustBar />
         <Clients />
         <KeyBenefits />
         <Features />
