@@ -1,6 +1,7 @@
 import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
 import Clients from "@/components/landing/Clients";
+import ProblemSection from "@/components/landing/ProblemSection";
 import KeyBenefits from "@/components/landing/KeyBenefits";
 import Features from "@/components/landing/Features";
 import Integrations from "@/components/landing/Integrations";
@@ -18,6 +19,7 @@ export default function Home() {
       <main>
         <Hero />
         <Clients />
+        <ProblemSection />
         <KeyBenefits />
         <Features />
         <Integrations />
