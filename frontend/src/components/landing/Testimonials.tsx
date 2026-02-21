@@ -78,7 +78,7 @@ export default function Testimonials() {
                 viewBox="0 0 20 20"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="mt-0.5 flex-shrink-0"
+                className="mt-0.5 shrink-0"
                 aria-hidden
               >
                 <path
@@ -199,7 +199,7 @@ function TestimonialCard({ name, role, avatar, rating, quote }: TestimonialCardP
             {Array.from({ length: rating }).map((_, i) => (
               <span key={i} className="relative h-5 w-5 block">
                 <Image
-                  src="/assets/testimonials/star.svg"
+                  src="/assets/testimonials/star.png"
                   alt=""
                   fill
                   className="object-contain"
