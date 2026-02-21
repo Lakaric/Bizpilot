@@ -1,7 +1,6 @@
 import Image from "next/image";
 
-const logoMarkSvg =
-  "http://localhost:3845/assets/c34432854b18faceec5edf5e916747216dacdbb7.svg";
+const logoSrc = "/assets/Bizbot-logo.png";
 
 function NavLink({ children }: { children: React.ReactNode }) {
   return (
@@ -44,12 +43,11 @@ export default function Navbar() {
           <div className="flex h-full items-center gap-[40px]">
             <div className="flex items-center gap-[4px]">
               <Image
-                alt=""
-                className="h-[19.85px] w-[20px]"
-                height={20}
-                src={logoMarkSvg}
-                unoptimized
-                width={20}
+                alt="BizPilot logo"
+                className="h-[28px] w-[28px]"
+                height={28}
+                src={logoSrc}
+                width={28}
               />
               <span className="text-[24px] font-semibold leading-[34px] tracking-[-0.24px] text-[#1c1f25]">
                 BizPilot
