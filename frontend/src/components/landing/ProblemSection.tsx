@@ -2,11 +2,11 @@
 
 import React from "react";
 
-const img = "http://localhost:3845/assets/f43bc394647af64cf54feb7cd7118e7cb1fe5fac.svg";
-const img1 = "http://localhost:3845/assets/4484c28fc5d46af6ef4c2007379adf5e6382b268.svg";
-const img2 = "http://localhost:3845/assets/36309c98ac0089b43aa896d008345a452f22922d.svg";
-const img3 = "http://localhost:3845/assets/4ab4c1cf6632582f5185927a6e7fe4403b14dc60.svg";
-const img4 = "http://localhost:3845/assets/356774f4a084a03f10816423b2d7b08ffd3a67a9.svg";
+const logoSrc = "/assets/Problems/Bizbot-logo.png";
+const img1 = "/assets/Problems/chasing-clients.png";
+const img2 = "/assets/Problems/switching-between.png";
+const img3 = "/assets/Problems/book-keeping.png";
+const img4 = "/assets/Problems/clear-visibility.png";
 
 interface ProblemCardProps {
   icon: string;
@@ -58,7 +58,7 @@ export default function ProblemSection() {
         {/* Section Heading */}
         <div className="flex flex-col items-center gap-8 text-center max-w-3xl">
           <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm">
-            <img src={img} alt="" className="w-4 h-4" />
+            <img src={logoSrc} alt="" className="w-4 h-4" />
             <span className="text-sm font-medium text-slate-600">
               The Problems we Solve
             </span>
