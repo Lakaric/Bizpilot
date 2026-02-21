@@ -25,8 +25,7 @@ export default function Home() {
         <ProblemSection />
         <KeyBenefits />
         <Features />
-        <Integrations />
-        <Testimonials />
+         <Testimonials />
         <Pricing />
         <FAQ />
         <CTA />
