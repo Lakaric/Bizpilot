@@ -5,29 +5,29 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 const integrations = [
-  { name: 'Zendesk', category: 'Customer Support', logo: '/assets/integrations/zendesk.svg', row: 1 },
-  { name: 'Outlook Calendar', category: 'Communication', logo: '/assets/integrations/outlook.svg', row: 1 },
-  { name: 'Calendly', category: 'Customer Support', logo: '/assets/integrations/calendly.svg', row: 1 },
-  { name: 'Gmail', category: 'Communication', logo: '/assets/integrations/gmail.svg', row: 2 },
-  { name: 'Payoneer', category: 'Payments', logo: '/assets/integrations/payoneer.png', row: 2 },
-  { name: 'Google Drive', category: 'File Management', logo: '/assets/integrations/google-drive.png', row: 2 },
-  { name: 'Paypal', category: 'Payments', logo: '/assets/integrations/paypal.svg', row: 3 },
-  { name: 'Paystack', category: 'Payments', logo: '/assets/integrations/paystack.svg', row: 3 },
-  { name: 'Stripe', category: 'Payments', logo: '/assets/integrations/stripe.svg', row: 3 },
+  { name: 'Zendesk', category: 'Customer Support', logo: '/assets/testimonials/Zendesk.png', row: 1 },
+  { name: 'Outlook Calendar', category: 'Communication', logo: '/assets/testimonials/Container.png', row: 1 },
+  { name: 'Calendly', category: 'Customer Support', logo: '/assets/testimonials/calendly_symbol.svg.png', row: 1 },
+  { name: 'Gmail', category: 'Communication', logo: '/assets/testimonials/gmail_symbol.svg.png', row: 2 },
+  { name: 'Payoneer', category: 'Payments', logo: '/assets/testimonials/Payoneer.png', row: 2 },
+  { name: 'Google Drive', category: 'File Management', logo: '/assets/testimonials/google_icon.jpeg.png', row: 2 },
+  { name: 'Paypal', category: 'Payments', logo: '/assets/testimonials/Paypal.png', row: 3 },
+  { name: 'Paystack', category: 'Payments', logo: '/assets/testimonials/paystack_symbol.svg.png', row: 3 },
+  { name: 'Stripe', category: 'Payments', logo: '/assets/testimonials/Stripe.png', row: 3 },
 ];
 
 const testimonials = [
   {
     name: 'Tunde',
     role: 'SME Owner',
-    avatar: '/assets/testimonials/avatar-tunde.svg',
+    avatar: '/assets/testimonials/tunde-avatar.png',
     rating: 5,
     quote: 'BizPilot saved us over 10 hours each week on bookkeeping and made tracking payments effortless.',
   },
   {
     name: 'Ada',
     role: 'Freelancer',
-    avatar: '/assets/testimonials/avatar-ada.svg',
+    avatar: '/assets/testimonials/Ada-avatar.png',
     rating: 5,
     quote: 'With BizBot, I finally get clarity on my cash flow without spending hours on spreadsheets.',
   },
@@ -45,7 +45,7 @@ export default function Testimonials() {
             <div className="inline-flex items-center gap-2 rounded-[20px] border border-slate-200 bg-white px-4 py-2.5 shadow-[0px_1px_3px_rgba(0,0,0,0.06)]">
               <div className="h-4 w-4 relative">
                 <Image
-                  src="/assets/testimonials/workflow-icon.svg"
+                  src="/assets/testimonials/Bizbot-logo.png"
                   alt=""
                   fill
                   className="object-contain"
