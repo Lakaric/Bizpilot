@@ -15,7 +15,7 @@ interface ProblemCardProps {
 
 function ProblemCard({ icon, text }: ProblemCardProps) {
   return (
-    <div className="group relative h-[176px] w-full max-w-[286px] transition-transform duration-300 hover:-translate-y-1">
+    <div className="group relative h-[176px] w-full max-w-[335px] lg:max-w-[286px] transition-transform duration-300 hover:-translate-y-1">
       <div className="absolute top-[32px] left-0 h-[144px] w-full rounded-xl border border-blue-50 bg-white px-5 py-8 flex flex-col items-center justify-end transition-shadow">
         <p className="text-center text-slate-900 text-base font-medium leading-relaxed">
           {text}
@@ -53,10 +53,10 @@ export default function ProblemSection() {
   ];
 
   return (
-    <section className="relative w-full bg-white py-24 px-6 md:py-32 overflow-hidden">
-      <div className="mx-auto max-w-7xl flex flex-col items-center gap-16">
+    <section className="relative w-full bg-white py-[60px] px-5 md:py-32 md:px-6 overflow-hidden">
+      <div className="mx-auto max-w-7xl flex flex-col items-center gap-[60px] md:gap-16">
         {/* Section Heading */}
-        <div className="flex flex-col items-center gap-8 text-center max-w-3xl">
+        <div className="flex flex-col items-center gap-8 text-center w-full max-w-[520px] md:max-w-3xl">
           <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm">
             <img src={logoSrc} alt="" className="w-4 h-4" />
             <span className="text-sm font-medium text-slate-600">
@@ -64,16 +64,16 @@ export default function ProblemSection() {
             </span>
           </div>
 
-          <div className="flex flex-col gap-[16px]">
-            <h2 className="text-[38px] font-semibold tracking-tight text-slate-900 leading-tight">
+          <div className="flex flex-col gap-[16px] px-5 md:px-0">
+            <h2 className="text-[32px] md:text-[38px] font-semibold tracking-tight text-slate-900 leading-[1.16] md:leading-tight">
               Running a Business Shouldn’t be a Hassle
             </h2>
-            <p className="mx-auto max-w-2xl text-lg text-slate-500">
+            <p className="mx-auto max-w-2xl text-base md:text-lg text-slate-500">
               BizPilot fixes all that with automation and smart insights.
             </p>
           </div>
 
-          <button className="mt-[24px] h-11 w-[200px] rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors">
+          <button className="flex items-center justify-center h-[44px] w-full md:w-[200px] rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors">
             Start your free trial
           </button>
         </div>

@@ -39,8 +39,8 @@ export default function Features() {
   ];
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 bg-white overflow-hidden">
-      <div className="mx-auto max-w-3xl text-center mb-16 sm:mb-24">
+    <section className="mx-auto max-w-7xl px-5 sm:px-6 py-16 sm:py-24 lg:py-32 lg:px-8 bg-white overflow-hidden">
+      <div className="mx-auto max-w-3xl text-center mb-12 sm:mb-16 lg:mb-24">
         <div className="inline-flex items-center justify-center mb-4">
           <Image
             src="/assets/features/features-badge.svg"
@@ -50,17 +50,17 @@ export default function Features() {
             className="h-16 w-auto"
           />
         </div>
-        <h2 className="text-[38px] font-bold tracking-tight text-slate-900 leading-[1.2] mb-4">
+        <h2 className="text-3xl md:text-[38px] font-bold tracking-tight text-slate-900 leading-[1.2] mb-4">
           Everything you need in one Platform.
         </h2>
-        <p className="text-lg leading-8 text-slate-600 max-w-2xl mx-auto">
+        <p className="text-base md:text-lg leading-relaxed md:leading-8 text-slate-600 max-w-2xl mx-auto">
           BizPilot handles all the heavy lifting with automation and smart insights.
         </p>
       </div>
 
-      <div className="space-y-24">
+      <div className="space-y-16 lg:space-y-24">
         {features.map((feature, index) => (
-          <div key={index} className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-24 ${feature.reverse ? 'lg:flex-row-reverse' : ''}`}>
+          <div key={index} className={`flex flex-col lg:flex-row items-center gap-10 md:gap-12 lg:gap-24 ${feature.reverse ? 'lg:flex-row-reverse' : ''}`}>
             <motion.div
               className="w-full lg:w-1/2 flex justify-center"
               initial={{ opacity: 0, y: 20 }}
@@ -79,14 +79,14 @@ export default function Features() {
               </div>
             </motion.div>
             <div className="w-full lg:w-1/2 max-w-xl">
-              <h3 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-6">
+              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-4 md:mb-6">
                 {feature.title}
               </h3>
-              <p className="text-lg leading-8 text-slate-600">
+              <p className="text-base md:text-lg leading-relaxed md:leading-8 text-slate-600">
                 {feature.description}
               </p>
               {index === 4 && (
-                <button className="mt-10 rounded-lg bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors">
+                <button className="mt-8 md:mt-10 w-full sm:w-auto rounded-lg bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors">
                   Try it for 7 days free
                 </button>
               )}

@@ -23,10 +23,10 @@ function SmallEyebrowTag() {
   );
 }
 
-function SecondaryButton({ children }: { children: React.ReactNode }) {
+function SecondaryButton({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <a
-      className="inline-flex items-center justify-center rounded-[8px] border border-[#abbced] px-[16px] py-[12px] text-[14px] font-semibold leading-[1.26] text-[#2e58d1] hover:bg-blue-50"
+      className={`inline-flex w-full md:w-auto items-center justify-center rounded-[8px] border border-[#abbced] px-[16px] py-[12px] text-[14px] font-semibold leading-[1.26] text-[#2e58d1] hover:bg-blue-50 ${className || ""}`}
       href="#"
     >
       {children}
@@ -34,10 +34,10 @@ function SecondaryButton({ children }: { children: React.ReactNode }) {
   );
 }
 
-function PrimaryButton({ children }: { children: React.ReactNode }) {
+function PrimaryButton({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <a
-      className="inline-flex items-center justify-center rounded-[8px] bg-[#2e58d1] px-[16px] py-[12px] text-[14px] font-semibold leading-[1.26] text-white hover:bg-blue-700"
+      className={`inline-flex w-full md:w-auto items-center justify-center rounded-[8px] bg-[#2e58d1] px-[16px] py-[12px] text-[14px] font-semibold leading-[1.26] text-white hover:bg-blue-700 ${className || ""}`}
       href="#"
     >
       {children}
@@ -70,19 +70,19 @@ function FeatureItem({
 
 export default function Hero() {
   return (
-    <section className="w-full bg-white px-[32px] pb-[80px] pt-[112px]">
-      <div className="mx-auto flex w-full max-w-[1204px] flex-col items-center gap-[60px]">
+    <section className="w-full bg-white px-[20px] md:px-[32px] py-[60px] md:pb-[80px] md:pt-[112px]">
+      <div className="mx-auto flex w-full max-w-[1204px] flex-col items-center gap-[32px] md:gap-[60px]">
         {/* Content wrapper */}
         <div className="flex w-full max-w-[860px] flex-col items-center gap-[40px]">
           {/* Text wrapper */}
           <div className="flex w-full flex-col items-center gap-[20px]">
             <SmallEyebrowTag />
-            
-            <h1 className="w-full text-center text-[48px] font-semibold leading-[1.16] text-[#1c1f25]">
+
+            <h1 className="w-full text-center text-[38px] md:text-[48px] font-semibold leading-[1.16] text-[#1c1f25]">
               AI-Powered Analytics and Business Management for SMEs and SMBs
             </h1>
 
-            <div className="w-full px-[80px]">
+            <div className="w-full px-[20px] md:px-[80px]">
               <p className="text-center text-[16px] font-normal leading-[1.6] text-[#4b5162] opacity-80">
                 BizPilot brings invoicing, CRM, accounting, and analytics
                 together in one place. Automate routine work, predict late
@@ -92,15 +92,15 @@ export default function Hero() {
           </div>
 
           {/* Buttons */}
-          <div className="flex items-center gap-[8px]">
-            <SecondaryButton>Book a demo</SecondaryButton>
-            <PrimaryButton>Start your free trial</PrimaryButton>
+          <div className="flex w-full md:w-auto flex-col md:flex-row items-center justify-center gap-[8px]">
+            <PrimaryButton className="order-1 md:order-2">Start your free trial</PrimaryButton>
+            <SecondaryButton className="order-2 md:order-1">Book a demo</SecondaryButton>
           </div>
         </div>
 
         {/* Image and features */}
-        <div className="flex flex-col gap-[32px]">
-          <div className="h-[602px] w-[1204px] overflow-hidden rounded-[24px]">
+        <div className="flex w-full flex-col items-center gap-[16px] md:gap-[32px]">
+          <div className="h-[280px] sm:h-[400px] md:h-[602px] w-full overflow-hidden rounded-[24px]">
             <Image
               alt="BizPilot AI-powered business management dashboard"
               className="h-full w-full object-cover"
@@ -111,7 +111,7 @@ export default function Hero() {
           </div>
 
           {/* Feature items */}
-          <div className="flex w-[1204px] items-center justify-center gap-[24px]">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-center gap-[16px] md:gap-[24px]">
             <FeatureItem icon={aiAutomationIcon} text="AI-powered automation" />
             <FeatureItem icon={unifiedHubIcon} text="Unified business hub" />
             <FeatureItem

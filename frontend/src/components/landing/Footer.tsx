@@ -2,8 +2,7 @@
 import Image from "next/image";
 import * as React from "react";
 
-const logoMarkSvg =
-  "http://localhost:3845/assets/c34432854b18faceec5edf5e916747216dacdbb7.svg";
+const logoMarkSvg = "assets/bizbot-logo.png";
 
 function FooterLink({
   children,
@@ -49,7 +48,7 @@ export default function Footer() {
             </div>
 
             <form
-              className="w-full rounded-[32px] bg-white px-[16px] py-[4px]"
+              className="w-full rounded-[32px] bg-white px-[1px] py-[4px]"
               onSubmit={(e) => {
                 e.preventDefault();
                 // wire up later
@@ -60,13 +59,14 @@ export default function Footer() {
                   Email address
                 </label>
                 <input
-                  className="h-[43.19px] w-full rounded-[88px] bg-transparent text-[16px] leading-[24px] text-[#120a0b] placeholder:text-[rgba(18,10,11,0.6)] focus:outline-none"
+                  className="h-[43.19px] w-full px-[16px] rounded-[88px] bg-transparent text-[16px] leading-[2px] text-[#120a0b] placeholder:text-[rgba(18,10,11,0.6)] focus:outline-none"
                   id="footer-email"
                   inputMode="email"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   type="email"
                   value={email}
+                  
                 />
                 <button
                   className="shrink-0 rounded-[32px] bg-[#2e58d1] px-[20px] py-[12px] text-[16px] font-medium leading-[24px] text-white hover:bg-blue-700"

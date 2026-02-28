@@ -6,12 +6,12 @@ const imgG2LogoSvg = "/assets/trust-bar/g2-logo.svg";
 
 export default function TrustBar() {
     return (
-        <div className="bg-white flex flex-col gap-0 items-center pb-[60px] pt-[40px] px-[32px] relative w-full" data-name="Trust Bar">
+        <div className="bg-white flex flex-col gap-0 items-center pb-[40px] md:pb-[60px] pt-[32px] md:pt-[40px] px-[20px] md:px-[32px] relative w-full" data-name="Trust Bar">
             <div className="flex flex-col gap-[20px] items-center max-w-[1204px] relative shrink-0 w-full" data-name="Container">
-                <p className="font-['Inter'] font-normal leading-[1.6] min-w-full not-italic opacity-80 relative shrink-0 text-[16px] text-[#4b5162] text-center w-min whitespace-pre-wrap">
+                <p className="font-['Inter'] font-normal leading-[1.6] w-full not-italic opacity-80 relative shrink-0 text-[14px] md:text-[16px] text-[#4b5162] text-center whitespace-normal md:whitespace-pre-wrap">
                     Trusted by small businesses and growing teams across industries
                 </p>
-                <div className="flex gap-[48px] items-center justify-center relative shrink-0 flex-wrap">
+                <div className="flex gap-[24px] md:gap-[48px] items-center justify-center w-full relative shrink-0 flex-wrap">
                     {/* GetApp Section */}
                     <div className="h-[64px] relative shrink-0 w-[260px]" data-name="Container">
                         <div className="absolute flex gap-[16px] items-center left-0 top-0">
