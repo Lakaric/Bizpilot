@@ -2,7 +2,7 @@
 import Image from "next/image";
 import * as React from "react";
 
-const logoMarkSvg = "assets/bizbot-logo.png";
+const logoMarkSvg = "assets/Bizbot-logo.png";
 
 function FooterLink({
   children,
