@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-const imgWhisk = "/assets/897b7fe84323fda8cfb1a6e5aa1cf87914d90c74.png";
+const imgWhisk = "/assets/hero/hero-image.png";
 const imgLogo = "http://localhost:3845/assets/6094e745d7b81eb4d7a7cfa889b79d3b51c30f52.svg";
 const imgOrLine = "http://localhost:3845/assets/a287914145e3748d5303a0ceffe24033546484ac.svg";
 const imgGoogle = "http://localhost:3845/assets/235e6f5b35968d18e20b0088037bca852b2c90f1.svg";
