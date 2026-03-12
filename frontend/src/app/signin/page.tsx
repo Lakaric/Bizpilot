@@ -162,7 +162,7 @@ export default function SignIn() {
                 </div>
               </div>
 
-              {/* Remember me + Forgot password */}
+              {/* Forgot password */}
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-[8px] cursor-pointer">
                   <input
