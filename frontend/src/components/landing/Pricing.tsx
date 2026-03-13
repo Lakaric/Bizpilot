@@ -2,12 +2,16 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 const pricingPlans = {
   monthly: [
     {
       name: "Starter",
-      price: "1,500",
+      slug: "STARTER" as const,
+      price: "Free",
       description: "For individuals and freelancers",
       features: [
         "Unlimited invoices",
@@ -15,11 +19,13 @@ const pricingPlans = {
         "Up to 5 clients",
         "Payment processing",
       ],
-      buttonText: "Start free trial",
+      buttonText: "Get started",
       popular: false,
+      isFree: true,
     },
     {
       name: "Professional",
+      slug: "PROFESSIONAL" as const,
       price: "5,000",
       description: "For growing small businesses",
       features: [
@@ -32,9 +38,11 @@ const pricingPlans = {
       ],
       buttonText: "Try 7 days for free",
       popular: true,
+      isFree: false,
     },
     {
       name: "Enterprise",
+      slug: "ENTERPRISE" as const,
       price: "8,000",
       description: "For Large teams with advanced needs",
       features: [
@@ -47,12 +55,14 @@ const pricingPlans = {
       ],
       buttonText: "Start free trial",
       popular: false,
+      isFree: false,
     },
   ],
   yearly: [
     {
       name: "Starter",
-      price: "15,000",
+      slug: "STARTER" as const,
+      price: "Free",
       description: "For individuals and freelancers",
       features: [
         "Unlimited invoices",
@@ -60,11 +70,13 @@ const pricingPlans = {
         "Up to 5 clients",
         "Payment processing",
       ],
-      buttonText: "Start free trial",
+      buttonText: "Get started",
       popular: false,
+      isFree: true,
     },
     {
       name: "Professional",
+      slug: "PROFESSIONAL" as const,
       price: "50,000",
       description: "For growing small businesses",
       features: [
@@ -77,9 +89,11 @@ const pricingPlans = {
       ],
       buttonText: "Try 7 days for free",
       popular: true,
+      isFree: false,
     },
     {
       name: "Enterprise",
+      slug: "ENTERPRISE" as const,
       price: "80,000",
       description: "For Large teams with advanced needs",
       features: [
@@ -92,6 +106,7 @@ const pricingPlans = {
       ],
       buttonText: "Start free trial",
       popular: false,
+      isFree: false,
     },
   ]
 };
@@ -125,6 +140,45 @@ const GridIcon = () => (
 
 export default function Pricing() {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const router = useRouter();
+
+  const handlePlanClick = async (plan: (typeof pricingPlans.monthly)[number]) => {
+    if (plan.isFree) {
+      router.push('/signup');
+      return;
+    }
+    setLoadingPlan(plan.slug);
+    try {
+      const res = await fetch(`${API_BASE}/api/v1/subscriptions/checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          planSlug: plan.slug,
+          billingInterval: billingCycle === 'monthly' ? 'MONTHLY' : 'YEARLY',
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        if (res.status === 401) {
+          router.push(`/signin?redirect=${encodeURIComponent('/#pricing')}`);
+          return;
+        }
+        throw new Error(json.message || 'Checkout failed');
+      }
+      if (json.success && json.data?.authorizationUrl) {
+        window.location.href = json.data.authorizationUrl;
+      } else {
+        throw new Error('Invalid checkout response');
+      }
+    } catch (err) {
+      console.error(err);
+      alert(err instanceof Error ? err.message : 'Checkout failed. Please try again.');
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
 
   return (
     <section id="pricing" className="bg-[#f8fafc] py-24 lg:py-32">
@@ -195,8 +249,8 @@ export default function Pricing() {
                   </div>
 
                   <div className="mb-6 flex items-baseline border-b border-white/10 pb-6">
-                    <span className="text-[40px] font-bold">₦{plan.price}</span>
-                    <span className="text-white/60 text-lg ml-1 font-medium">/month</span>
+                    <span className="text-[40px] font-bold">{plan.price === 'Free' ? 'Free' : `₦${plan.price}`}</span>
+                    {plan.price !== 'Free' && <span className="text-white/60 text-lg ml-1 font-medium">/month</span>}
                   </div>
 
                   <p className="text-white/80 text-sm mb-8 h-10">
@@ -214,8 +268,12 @@ export default function Pricing() {
                     ))}
                   </ul>
 
-                  <button className="w-full rounded-xl bg-white px-6 py-4 text-sm font-bold text-[#254bdb] transition-all hover:bg-gray-50 shadow-lg shadow-blue-900/20">
-                    {plan.buttonText}
+                  <button
+                    onClick={() => handlePlanClick(plan)}
+                    disabled={!!loadingPlan}
+                    className="w-full rounded-xl bg-white px-6 py-4 text-sm font-bold text-[#254bdb] transition-all hover:bg-gray-50 shadow-lg shadow-blue-900/20 disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {loadingPlan === plan.slug ? 'Redirecting...' : plan.buttonText}
                   </button>
                 </div>
               ) : (
@@ -223,8 +281,8 @@ export default function Pricing() {
                   <div className="mb-6">
                     <h3 className="text-xl font-bold text-slate-800 mb-6">{plan.name}</h3>
                     <div className="flex items-baseline gap-1 mb-8 border-b border-gray-100 pb-6">
-                      <span className="text-[40px] font-bold text-slate-900">₦{plan.price}</span>
-                      <span className="text-slate-400 text-lg ml-1 font-medium">/month</span>
+                      <span className="text-[40px] font-bold text-slate-900">{plan.price === 'Free' ? 'Free' : `₦${plan.price}`}</span>
+                      {plan.price !== 'Free' && <span className="text-slate-400 text-lg ml-1 font-medium">/month</span>}
                     </div>
                     <p className="text-slate-400 text-sm h-10 font-medium">
                       {plan.description}
@@ -244,8 +302,12 @@ export default function Pricing() {
                     </ul>
                   </div>
 
-                  <button className="w-full rounded-xl px-6 py-4 text-sm font-bold bg-[#2e58d1] text-white transition-all hover:bg-blue-700 shadow-md shadow-blue-200">
-                    {plan.buttonText}
+                  <button
+                    onClick={() => handlePlanClick(plan)}
+                    disabled={!!loadingPlan}
+                    className="w-full rounded-xl px-6 py-4 text-sm font-bold bg-[#2e58d1] text-white transition-all hover:bg-blue-700 shadow-md shadow-blue-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {loadingPlan === plan.slug ? 'Redirecting...' : plan.buttonText}
                   </button>
                 </>
               )}

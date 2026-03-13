@@ -7,7 +7,6 @@ import Pricing from "@/components/landing/Pricing";
 import FAQ from "@/components/landing/FAQ";
 import CTA from "@/components/landing/CTA";
 import Footer from "@/components/landing/Footer";
-
 import TrustBar from "@/components/TrustBar";
 
 export default function Home() {
@@ -20,11 +19,12 @@ export default function Home() {
         <TrustBar />
         {/* <Clients /> */}
         <ProblemSection />
-         <Features />
-         <Testimonials />
+        <Features />
+        <Testimonials />
         <Pricing />
         <FAQ />
         <CTA />
+       
       </main>
 
       <Footer />

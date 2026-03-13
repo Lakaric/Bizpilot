@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 // ----------------------------------------------------------------------
 // Icon Components (using standard stroke/feather-like icons as per design)
@@ -68,10 +70,11 @@ const ChevronDownIcon = ({ size = 24 }: { size?: number }) => (
     </svg>
 );
 
-const FileIcon = () => (
+const BarChartIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-        <path d="M10 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2h-3" />
+        <path d="M12 20V10" />
+        <path d="M18 20V4" />
+        <path d="M6 20v-4" />
     </svg>
 );
 
@@ -113,7 +116,7 @@ interface SubMenuItemProps {
 
 const MenuItem = ({ icon, label, active = false, hasDropdown = false, isExpanded = false, collapsed = false, href, onClick, ariaControls }: MenuItemProps) => {
     const activeClasses = active
-        ? "bg-[#2848a9] border-[#8790e2] border-[0.75px] rounded-[8px]"
+        ? "bg-[#1b357e] border-[#8790e2] border-[0.75px] rounded-[8px]"
         : "border border-transparent hover:bg-white/5 rounded-[8px]";
 
     if (collapsed) {
@@ -200,7 +203,8 @@ const SubMenuItem = ({ label, href }: SubMenuItemProps) => (
 // ----------------------------------------------------------------------
 
 export default function Sidebar() {
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const pathname = usePathname();
+    const { isCollapsed, setIsCollapsed } = useSidebar();
     const [salesDropdownOpen, setSalesDropdownOpen] = useState(false);
     const [bizbotDropdownOpen, setBizbotDropdownOpen] = useState(false);
 
@@ -264,14 +268,14 @@ export default function Sidebar() {
                 <div className="flex flex-col gap-[4px] items-start w-full">
                     {/* Top section */}
                     <div className="border-b-[0.8px] border-solid border-white/20 flex flex-col gap-[12px] pb-[8px] pt-[2px] w-full shrink-0">
-                        <MenuItem collapsed={isCollapsed} icon={<BookOpenIcon />} label="Create invoice" href="/dashboard/invoice/create" />
-                        <MenuItem collapsed={isCollapsed} icon={<ReceiptIcon />} label="Generate receipt" href="/dashboard/receipt/generate" />
+                        <MenuItem collapsed={isCollapsed} icon={<BookOpenIcon />} label="Create invoice" href="/dashboard/invoice/create" active={pathname === "/dashboard/invoice/create"} />
+                        <MenuItem collapsed={isCollapsed} icon={<ReceiptIcon />} label="Generate receipt" href="/dashboard/receipt/generate" active={pathname === "/dashboard/receipt/generate"} />
                     </div>
 
                     {/* Middle section */}
                     <div className="flex flex-col gap-[12px] py-[2px] w-full shrink-0">
-                        <MenuItem collapsed={isCollapsed} active icon={<DashboardIcon />} label="Dashboard" href="/dashboard" />
-                        <MenuItem collapsed={isCollapsed} icon={<UsersIcon />} label="Customers" href="/dashboard/customers" />
+                        <MenuItem collapsed={isCollapsed} active={pathname === "/dashboard"} icon={<DashboardIcon />} label="Dashboard" href="/dashboard" />
+                        <MenuItem collapsed={isCollapsed} icon={<UsersIcon />} label="Customers" href="/dashboard/customers" active={pathname?.startsWith("/dashboard/customers")} />
 
                         {isCollapsed ? (
                             <MenuItem
@@ -279,6 +283,7 @@ export default function Sidebar() {
                                 icon={<TimelineIcon />}
                                 label="Sales"
                                 href="/dashboard/sales/overview"
+                                active={pathname?.startsWith("/dashboard/sales")}
                             />
                         ) : (
                             <div className="flex flex-col gap-[2px] w-full">
@@ -300,8 +305,8 @@ export default function Sidebar() {
                             </div>
                         )}
 
-                        <MenuItem collapsed={isCollapsed} icon={<FileIcon />} label="Reports" href="/dashboard/reports" />
-                        <MenuItem collapsed={isCollapsed} icon={<PieChartIcon />} label="Expenses" href="/dashboard/expenses" />
+                        <MenuItem collapsed={isCollapsed} icon={<BarChartIcon />} label="Reports" href="/dashboard/reports" active={pathname === "/dashboard/reports"} />
+                        <MenuItem collapsed={isCollapsed} icon={<PieChartIcon />} label="Expenses" href="/dashboard/expenses" active={pathname?.startsWith("/dashboard/expenses")} />
 
                         {isCollapsed ? (
                             <MenuItem
@@ -319,6 +324,7 @@ export default function Sidebar() {
                                 }
                                 label="Bizbot"
                                 href="/dashboard/bizbot/chat"
+                                active={pathname?.startsWith("/dashboard/bizbot")}
                             />
                         ) : (
                             <div className="flex flex-col gap-[2px] w-full">
@@ -354,7 +360,7 @@ export default function Sidebar() {
 
             {/* Footer Settings */}
             <div className="border-t-[0.75px] border-solid border-white/20 flex flex-col items-start py-[4px] w-full mt-auto pt-4 pb-2">
-                <MenuItem collapsed={isCollapsed} icon={<SettingsIcon />} label="Settings" href="/dashboard/settings" />
+                <MenuItem collapsed={isCollapsed} icon={<SettingsIcon />} label="Settings" href="/dashboard/settings" active={pathname?.startsWith("/dashboard/settings")} />
             </div>
         </div>
     );
