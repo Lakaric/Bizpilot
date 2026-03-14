@@ -45,6 +45,7 @@ export default function ForgotPassword() {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter email or phone number"
                             className="w-full h-[50px] px-[12px] py-[10px] border border-[#eaeaeb] rounded-[8px] bg-transparent font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#09122a] placeholder:text-[#d6d7dc] focus:outline-none focus:border-[#2446a8] transition-colors"
+                        required
                         />
                     </div>
 
