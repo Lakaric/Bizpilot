@@ -1,89 +1,73 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
-// ----------------------------------------------------------------------
-// Icon Components (matching Sidebar pattern)
-// ----------------------------------------------------------------------
+// Asset URLs from Figma Design Context
+const imgSearchIcon = "/assets/search.svg";
+const imgBellIcon = "/assets/bell.svg";
+const imgUserAvatar = "/assets/user-avatar.png";
+const imgChevronDown = "/assets/chevron-down.svg";
 
-const SearchIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="8" />
-        <path d="m21 21-4.3-4.3" />
-    </svg>
-);
-
-const BellDotIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M10.268 21a2 2 0 0 0 3.464 0" />
-        <path d="M13.916 2.314A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.74 7.327A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673a9 9 0 0 1-.585-.665" />
-        <circle cx="18" cy="8" r="3" fill="currentColor" stroke="none" />
-    </svg>
-);
-
-const UserIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="8" r="4" />
-        <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg>
-);
-
-const ChevronDownIcon = ({ size = 24 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m6 9 6 6 6-6" />
-    </svg>
-);
-
-// ----------------------------------------------------------------------
-// Header Component
-// ----------------------------------------------------------------------
-
-export default function Header() {
-    const [searchValue, setSearchValue] = useState("");
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-
+const Header = () => {
     return (
-        <header className="bg-background border-b border-[#e2e2e2] flex items-center justify-between px-8 py-5 w-full">
-            {/* Search bar */}
-            <div className="bg-surface border border-[#eaeaeb] flex items-center gap-1.5 px-3 py-3 rounded-2xl w-full max-w-[446px]">
-                <div className="shrink-0 size-5 flex items-center justify-center text-text-muted">
-                    <SearchIcon />
+        <header
+            className="bg-[#fcfcfc] border-[#e2e2e2] border-b-[0.6px] border-solid flex items-center justify-between px-8 py-5 relative shrink-0 w-full sticky top-0 z-40"
+            data-name="Header"
+        >
+            {/* Search Box */}
+            <div className="bg-[#f2f3f5] border border-[#eaeaeb] border-solid flex flex-col items-start justify-center px-3 py-3 relative rounded-2xl shrink-0 max-w-[446px] w-full">
+                <div className="flex gap-1.5 items-center relative shrink-0 w-full">
+                    <div className="overflow-clip relative shrink-0 size-5 flex items-center justify-center">
+                        <img
+                            src={imgSearchIcon}
+                            alt=""
+                            className="block max-w-none size-3.5"
+                        />
+                    </div>
+                    <div className="flex items-center justify-center relative shrink-0">
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="bg-transparent border-none outline-none font-['Inter'] font-medium leading-[25.6px] opacity-60 relative shrink-0 text-base text-[#767d92] tracking-[-0.5px] whitespace-nowrap"
+                        />
+                    </div>
                 </div>
-                <input
-                    type="search"
-                    placeholder="Q Search..."
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    className="flex-1 min-w-0 bg-transparent font-medium text-base leading-[25.6px] text-text placeholder:text-text-muted tracking-[-0.5px] outline-none"
-                    aria-label="Search"
-                />
             </div>
 
-            {/* Right section: bell + avatar + chevron */}
-            <div className="flex gap-5 items-center justify-end shrink-0">
-                <button
-                    type="button"
-                    className="flex items-center justify-center size-6 text-text-muted hover:text-text transition-colors cursor-pointer"
-                    aria-label="Notifications"
-                >
-                    <BellDotIcon />
-                </button>
-
-                <div className="flex gap-3 items-center">
-                    <div className="relative size-[38px] rounded-full overflow-hidden bg-primary shrink-0 flex items-center justify-center text-white">
-                        <UserIcon />
+            {/* Right Section */}
+            <div className="flex gap-5 items-center justify-end relative shrink-0">
+                <div className="flex items-center relative shrink-0">
+                    <div className="overflow-clip relative shrink-0 size-6">
+                        <div className="absolute inset-[8.33%_12.5%] flex items-center justify-center">
+                            <img
+                                src={imgBellIcon}
+                                alt=""
+                                className="block max-w-none size-full"
+                            />
+                        </div>
                     </div>
-                    <button
-                        type="button"
-                        onClick={() => setDropdownOpen(!dropdownOpen)}
-                        className="flex items-center justify-center size-6 text-text-muted hover:text-text transition-colors cursor-pointer"
-                        aria-expanded={dropdownOpen}
-                        aria-label="User menu"
-                    >
-                        <ChevronDownIcon size={24} />
-                    </button>
                 </div>
+                <button className="cursor-pointer flex gap-3 items-center relative shrink-0">
+                    <div className="flex items-center relative shrink-0">
+                        <div className="relative shrink-0 size-[38px]">
+                            <img
+                                src={imgUserAvatar}
+                                alt=""
+                                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full rounded-full"
+                            />
+                        </div>
+                    </div>
+                    <div className="overflow-clip relative shrink-0 size-6 flex items-center justify-center">
+                        <img
+                            src={imgChevronDown}
+                            alt=""
+                            className="block max-w-none size-[14px] h-[8px]"
+                        />
+                    </div>
+                </button>
             </div>
         </header>
     );
-}
+};
+
+export default Header;
