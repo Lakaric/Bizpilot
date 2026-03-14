@@ -101,10 +101,10 @@ export default function Navbar() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-[32px]">
-              <NavLink>Features</NavLink>
-              <NavLink>Pricing</NavLink>
-              <NavLink>About Us</NavLink>
-              <NavLink>FAQ</NavLink>
+              <NavLink href="/#features">Features</NavLink>
+              <NavLink href="/#pricing">Pricing</NavLink>
+              <NavLink href="/#about">About Us</NavLink>
+              <NavLink href="/#faq">FAQ</NavLink>
             </nav>
           </div>
 

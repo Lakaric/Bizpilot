@@ -1,5 +1,7 @@
 import React from 'react'
 import Sidebar from '@/components/dashboard/Sidebar'
+import DashboardMain from '@/components/dashboard/DashboardMain'
+import { SidebarProvider } from '@/contexts/SidebarContext'
 
 const layout = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -16,6 +18,12 @@ const layout = ({ children }: { children: React.ReactNode }) => {
                 {children}
             </main>
         </div>
+        <SidebarProvider>
+            <div className='flex'>
+                <Sidebar />
+                <DashboardMain>{children}</DashboardMain>
+            </div>
+        </SidebarProvider>
     )
 }
 
