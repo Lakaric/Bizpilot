@@ -65,8 +65,8 @@ const TimelineIcon = () => (
 );
 
 const ChevronDownIcon = ({ size = 24 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m6 9 6 6 6-6" />
+    <svg width={size} height={size * 8 / 14} viewBox="0 0 14 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M1 1L7 7L13 1" />
     </svg>
 );
 
