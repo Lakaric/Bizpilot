@@ -22,6 +22,17 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, amount, icon, iconBg }) =>
             </div>
             <div className={`${iconBg} content-stretch flex items-center justify-center overflow-clip px-2 py-2 relative rounded-md shrink-0 size-10`}>
                 <div className="relative shrink-0 size-6 flex items-center justify-center">
+        <div className="flex-1 min-w-[200px] border border-[#eaeaeb] rounded-2xl p-4 flex items-center justify-between transition-all">
+            <div className="flex flex-col gap-2">
+                <p className="font-['Inter'] font-semibold text-2xl text-[#09122a] tracking-tight">
+                    {amount}
+                </p>
+                <p className="font-['Inter'] font-medium text-sm text-[#767d92] tracking-tight">
+                    {title}
+                </p>
+            </div>
+            <div className={`size-10 rounded-lg ${iconBg} flex items-center justify-center`}>
+                <div className="size-6 flex items-center justify-center">
                     {icon}
                 </div>
             </div>
