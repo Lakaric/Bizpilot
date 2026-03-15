@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react'
-import DashboardHeader from '@/components/dashboard/DashboardHeader'
 import StatsCard from '@/components/dashboard/StatsCard'
 import ChecklistCard from '@/components/dashboard/ChecklistCard'
 
@@ -56,98 +55,94 @@ const BookOpenChecklistIcon = () => (
 
 const DashboardPage = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-[#fcfcfc] pl-[256px]">
-      <DashboardHeader />
+    <div className="flex flex-col gap-[24px] w-full overflow-hidden">
+      {/* Welcome Section */}
+      <div className="flex flex-col gap-0 w-full">
+        <h1 className="font-['Inter'] font-semibold text-[24px] leading-[38.4px] tracking-[-0.24px] text-[#122354]">
+          Welcome to BizPilot 👋
+        </h1>
+        <p className="font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#767d92]">
+          Let’s get your Bizpilot  workspace ready.
+        </p>
+      </div>
 
-      <main className="flex-1 p-8 w-full max-w-[1200px] flex flex-col gap-10 overflow-hidden">
-        {/* Welcome Section */}
-        <div className="flex flex-col gap-1">
-          <h1 className="font-['Inter'] font-semibold text-2xl text-[#122354] tracking-tight">
-            Welcome to BizPilot 👋
-          </h1>
-          <p className="font-['Inter'] font-medium text-base text-[#767d92] tracking-tight">
-            Let’s get your Bizpilot workspace ready.
+      {/* Stats Grid */}
+      <div className="flex flex-nowrap gap-[20px] w-full overflow-hidden">
+        <StatsCard
+          title="Sales this week"
+          amount="NGN0"
+          icon={<UpRightIcon />}
+          iconBg="bg-[#ebf9eb]"
+        />
+        <StatsCard
+          title="Invoice Sent"
+          amount="NGN0"
+          icon={<InvoiceIcon />}
+          iconBg="bg-[#eaeefa]"
+        />
+        <StatsCard
+          title="Expenses"
+          amount="NGN0"
+          icon={<ExpensesIcon />}
+          iconBg="bg-[#fde8e8]"
+        />
+        <StatsCard
+          title="Outstanding"
+          amount="NGN0"
+          icon={<CubeIcon />}
+          iconBg="bg-[#fef5e7]"
+        />
+      </div>
+
+      {/* Checklist Section */}
+      <div className="flex flex-col gap-[24px]">
+        <div className="flex flex-col gap-2">
+          <h2 className="font-['Inter'] font-semibold text-[28px] leading-[44.8px] tracking-[-0.28px] text-[#122354]">
+            Quick Start Checklist
+          </h2>
+          <p className="font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#767d92]">
+            Complete these quick steps to start managing your Business smarter with AI.
           </p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="flex flex-nowrap gap-5 w-full overflow-hidden">
-          <StatsCard
-            title="Sales this week"
-            amount="NGN0"
-            icon={<UpRightIcon />}
-            iconBg="bg-[#ebf9eb]"
-          />
-          <StatsCard
-            title="Invoice Sent"
-            amount="NGN0"
-            icon={<InvoiceIcon />}
+        <div className="flex flex-nowrap gap-[35px] w-full">
+          <ChecklistCard
+            step="Step 1"
+            stepNumber="Step 1"
+            status="Pending"
+            title="Add your First Customer"
+            description="Keep all customers organized in one place"
+            buttonText="Add Customer"
+            icon={<BookOpenChecklistIcon />}
             iconBg="bg-[#eaeefa]"
+            aiSuggestion="You can Import customer’s contact from Google Contacts or CSV."
           />
-          <StatsCard
-            title="Expenses"
-            amount="NGN0"
-            icon={<ExpensesIcon />}
-            iconBg="bg-[#fde8e8]"
+          <ChecklistCard
+            step="Step 1"
+            stepNumber="Step 1"
+            status="Pending"
+            title="Create your first Invoice"
+            description="Send your first Invoice with AI assistance."
+            buttonText="Create Invoice"
+            icon={<BookOpenChecklistIcon />}
+            iconBg="bg-[#e6fbfe]"
+            aiSuggestion="We can pre-fill services based on your industry."
+            variant="secondary"
           />
-          <StatsCard
-            title="Outstanding"
-            amount="NGN0"
-            icon={<CubeIcon />}
-            iconBg="bg-[#fef5e7]"
+          <ChecklistCard
+            step="Step 1"
+            stepNumber="Step 1"
+            status="Pending"
+            title="Generate Receipt"
+            description="Create sales receipt"
+            buttonText="Create Receipt"
+            icon={<BookOpenChecklistIcon />}
+            iconBg="bg-[#ebf9eb]"
+            aiSuggestion="Pre-fill receipt details based on your business type."
+            variant="secondary"
           />
         </div>
-
-        {/* Checklist Section */}
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h2 className="font-['Inter'] font-semibold text-[28px] text-[#122354] tracking-tight leading-tight">
-              Quick Start Checklist
-            </h2>
-            <p className="font-['Inter'] font-medium text-base text-[#767d92] tracking-tight">
-              Complete these quick steps to start managing your Business smarter with AI.
-            </p>
-          </div>
-
-          <div className="flex flex-nowrap gap-[20px] w-full">
-            <ChecklistCard
-              step="Step 1"
-              stepNumber="Step 1"
-              status="Pending"
-              title="Add your First Customer"
-              description="Keep all customers organized in one place"
-              buttonText="Add Customer"
-              icon={<BookOpenChecklistIcon />}
-              iconBg="bg-[#eaeefa]"
-              aiSuggestion="You can Import customer’s contact from Google Contacts or CSV."
-            />
-            <ChecklistCard
-              step="Step 1"
-              stepNumber="Step 1"
-              status="Pending"
-              title="Create your first Invoice"
-              description="Send your first Invoice with AI assistance."
-              buttonText="Create Invoice"
-              icon={<BookOpenChecklistIcon />}
-              iconBg="bg-[#e6fbfe]"
-              aiSuggestion="We can pre-fill services based on your industry."
-              variant="secondary"
-            />
-            <ChecklistCard
-              step="Step 1"
-              stepNumber="Step 1"
-              status="Pending"
-              title="Generate Receipt"
-              description="Create sales receipt"
-              buttonText="Create Receipt"
-              icon={<BookOpenChecklistIcon />}
-              iconBg="bg-[#ebf9eb]"
-              aiSuggestion="Pre-fill receipt details based on your business type."
-              variant="secondary"
-            />
-          </div>
-        </div>
-      </main>
+      </div>
     </div>
   )
 }
