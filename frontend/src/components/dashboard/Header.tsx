@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 
 // ----------------------------------------------------------------------
 // Icon Components (matching Sidebar pattern)
@@ -34,6 +36,14 @@ const ChevronDownIcon = ({ size = 24 }: { size?: number }) => (
     </svg>
 );
 
+const LogOutIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+    </svg>
+);
+
 // ----------------------------------------------------------------------
 // Header Component
 // ----------------------------------------------------------------------
@@ -41,6 +51,31 @@ const ChevronDownIcon = ({ size = 24 }: { size?: number }) => (
 export default function Header() {
     const [searchValue, setSearchValue] = useState("");
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const router = useRouter();
+    const { user, logout } = useAuthStore();
+
+    useEffect(() => {
+        function handleClickOutside(e: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setDropdownOpen(false);
+            }
+        }
+        if (dropdownOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [dropdownOpen]);
+
+    const handleLogout = async () => {
+        setDropdownOpen(false);
+        await logout();
+        router.push("/signin");
+    };
+
+    const initials = user?.name
+        ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+        : null;
 
     return (
         <header className="bg-background border-b border-[#e2e2e2] flex items-center justify-between px-8 py-5 w-full">
@@ -69,9 +104,9 @@ export default function Header() {
                     <BellDotIcon />
                 </button>
 
-                <div className="flex gap-3 items-center">
-                    <div className="relative size-[38px] rounded-full overflow-hidden bg-primary shrink-0 flex items-center justify-center text-white">
-                        <UserIcon />
+                <div ref={dropdownRef} className="relative flex gap-3 items-center">
+                    <div className="size-[38px] rounded-full overflow-hidden bg-primary shrink-0 flex items-center justify-center text-white text-sm font-semibold">
+                        {initials ?? <UserIcon />}
                     </div>
                     <button
                         type="button"
@@ -82,6 +117,29 @@ export default function Header() {
                     >
                         <ChevronDownIcon size={24} />
                     </button>
+
+                    {dropdownOpen && (
+                        <div className="absolute right-0 top-full mt-2 w-64 bg-white border border-[#eaeaeb] rounded-xl shadow-lg z-50 overflow-hidden">
+                            <div className="px-4 py-3 border-b border-[#eaeaeb]">
+                                <p className="text-sm font-semibold text-text truncate">
+                                    {user?.name ?? "User"}
+                                </p>
+                                <p className="text-xs text-text-muted truncate">
+                                    {user?.email}
+                                </p>
+                            </div>
+                            <div className="p-1">
+                                <button
+                                    type="button"
+                                    onClick={handleLogout}
+                                    className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                                >
+                                    <LogOutIcon />
+                                    Log out
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </header>
