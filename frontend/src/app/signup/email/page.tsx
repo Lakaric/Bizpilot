@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
+import { authClient } from "@/lib/auth-client";
 
 const imgHeroRight = "/assets/hero/sign-up.png";
 const imgLogo = "/assets/Bizbot-logo.png";
@@ -15,6 +17,9 @@ export default function SignUpEmail() {
     const [showPassword, setShowPassword] = useState(false);
     const [phone, setPhone] = useState("");
     const [referralSource, setReferralSource] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const router = useRouter();
 
     const passwordStrength = useMemo(() => {
         if (!password) return 0;
@@ -49,6 +54,35 @@ export default function SignUpEmail() {
         password.trim().length >= 8 &&
         phone.trim() &&
         referralSource;
+
+    const handleSubmit = async () => {
+        if (!isValid) return;
+        setLoading(true);
+        setError("");
+
+        const fullPhone = `+234${phone.trim()}`;
+        const { error: signUpError } = await authClient.signUp.email({
+            email: email.trim(),
+            password,
+            name: `${firstName.trim()} ${lastName.trim()}`,
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            phone: fullPhone,
+            referralSource,
+        });
+
+        if (signUpError) {
+            if (signUpError.message?.includes("verification email has already been sent")) {
+                router.push(`/signup/verify?email=${encodeURIComponent(email.trim())}`);
+                return;
+            }
+            setError(signUpError.message ?? "Something went wrong. Please try again.");
+            setLoading(false);
+            return;
+        }
+
+        router.push(`/signup/verify?email=${encodeURIComponent(email.trim())}`);
+    };
 
     return (
         <div className="min-h-screen w-full bg-white flex">
@@ -258,16 +292,23 @@ export default function SignUpEmail() {
                             </div>
                         </div>
 
+                        {error && (
+                            <p className="font-['Inter'] text-[14px] text-[#d21212] text-center">
+                                {error}
+                            </p>
+                        )}
+
                         {/* Continue Button */}
                         <button
-                            disabled={!isValid}
+                            disabled={!isValid || loading}
+                            onClick={handleSubmit}
                             className={`w-full h-[56px] flex items-center justify-center rounded-[8px] font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] transition-colors ${
-                                isValid
+                                isValid && !loading
                                     ? "bg-[#2446a8] hover:bg-[#1d3a8e] text-white cursor-pointer"
                                     : "bg-[#e4e5e9] text-[#adb1be] cursor-not-allowed"
                             }`}
                         >
-                            Continue
+                            {loading ? "Creating account..." : "Continue"}
                         </button>
                     </div>
                 </div>
