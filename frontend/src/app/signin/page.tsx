@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
 
 const imgWhisk = "/assets/hero/hero-image.png";
 
-// Google icon SVG inlined as a component to avoid localhost asset dependency
 function GoogleIcon() {
   return (
     <svg
@@ -37,8 +38,47 @@ function GoogleIcon() {
 }
 
 export default function SignIn() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || !password.trim()) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const { error: signInError } = await authClient.signIn.email({
+        email: email.trim(),
+        password,
+        rememberMe,
+      });
+
+      if (signInError) {
+        setError(signInError.message ?? "Invalid credentials. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      router.push("/dashboard");
+    } catch {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = () => {
+    authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/dashboard",
+    });
+  };
 
   return (
     <div className="min-h-screen w-full bg-white flex">
@@ -81,22 +121,24 @@ export default function SignIn() {
           </div>
 
           {/* Form */}
-          <div className="flex flex-col gap-[40px] w-full">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-[40px] w-full">
 
             {/* Inputs */}
             <div className="flex flex-col gap-[24px] w-full">
 
-              {/* Email / Phone */}
+              {/* Email */}
               <div className="flex flex-col gap-[8px]">
                 <label
-                  htmlFor="email-phone"
+                  htmlFor="email"
                   className="font-['Inter'] font-medium text-[14px] leading-[22.4px] tracking-[-0.25px] text-[#09122a]"
                 >
                   Email or Phone number
                 </label>
                 <input
-                  id="email-phone"
+                  id="email"
                   type="text"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setError(""); }}
                   placeholder="Enter email or phone number"
                   className="w-full h-[50px] px-[12px] py-[10px] border border-[#eaeaeb] rounded-[8px] font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#0c1727] placeholder:text-[#d6d7dc] focus:outline-none focus:border-[#2446a8] transition-colors"
                 />
@@ -114,6 +156,8 @@ export default function SignIn() {
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => { setPassword(e.target.value); setError(""); }}
                     placeholder="Enter Password"
                     className="w-full h-[50px] px-[12px] py-[10px] pr-[48px] border border-[#eaeaeb] rounded-[8px] font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#0c1727] placeholder:text-[#d6d7dc] focus:outline-none focus:border-[#2446a8] transition-colors"
                   />
@@ -162,7 +206,7 @@ export default function SignIn() {
                 </div>
               </div>
 
-              {/* Forgot password */}
+              {/* Remember me / Forgot password */}
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-[8px] cursor-pointer">
                   <input
@@ -185,21 +229,34 @@ export default function SignIn() {
               </div>
             </div>
 
+            {error && (
+              <p className="font-['Inter'] text-[14px] text-[#d21212] text-center">
+                {error}
+              </p>
+            )}
+
             {/* Buttons and footer link */}
             <div className="flex flex-col gap-[24px] items-center w-full">
               <div className="flex flex-col gap-[16px] w-full">
                 {/* Sign In */}
                 <button
                   type="submit"
-                  className="w-full h-[56px] flex items-center justify-center bg-[#2446a8] hover:bg-[#1d3a8e] active:bg-[#162e7a] transition-colors rounded-[8px] font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-white"
+                  disabled={loading}
+                  className={`w-full h-[56px] flex items-center justify-center rounded-[8px] font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] transition-colors ${
+                    loading
+                      ? "bg-[#7b93d4] text-white cursor-not-allowed"
+                      : "bg-[#2446a8] hover:bg-[#1d3a8e] active:bg-[#162e7a] text-white"
+                  }`}
                 >
-                  Sign In
+                  {loading ? "Signing in..." : "Sign In"}
                 </button>
 
                 {/* Continue with Google */}
                 <button
                   type="button"
-                  className="w-full h-[56px] flex items-center justify-center gap-[8px] bg-[#eaeefa] hover:bg-[#dbe4f8] active:bg-[#ccd3f4] transition-colors rounded-[8px] font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#122354]"
+                  onClick={handleGoogleSignIn}
+                  disabled={loading}
+                  className="w-full h-[56px] flex items-center justify-center gap-[8px] bg-[#eaeefa] hover:bg-[#dbe4f8] active:bg-[#ccd3f4] transition-colors rounded-[8px] font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#122354] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <GoogleIcon />
                   Continue with Google
@@ -217,7 +274,7 @@ export default function SignIn() {
                 </Link>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 
