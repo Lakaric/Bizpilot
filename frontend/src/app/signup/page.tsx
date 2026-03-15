@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const imgWhisk = "/assets/hero/hero-image.png";
+const imgHeroRight = "/assets/hero/sign-up.png";
 const imgLogo = "/assets/Bizbot-logo.png";
 const imgGoogle = "/assets/testimonials/google_icon.jpeg.png";
 
@@ -105,8 +105,8 @@ export default function SignUp() {
             </div>
 
             {/* Right Side – Decorative Panel (Hidden on Mobile) */}
-            <div className="hidden lg:flex w-1/2 relative overflow-hidden items-center justify-center bg-white">
-                <div className="absolute top-[32px] right-0 w-[575px] h-[720px] rounded-[32px] overflow-hidden">
+            <div className="hidden lg:flex w-1/2 relative p-[32px] bg-white">
+                <div className="relative w-full h-full rounded-[32px] overflow-hidden min-h-[calc(100vh-64px)]">
                     {/* Gradient Background */}
                     <div
                         className="absolute inset-0 backdrop-blur-[32px]"
@@ -116,25 +116,25 @@ export default function SignUp() {
                         }}
                     />
 
-                    {/* Whisk Image */}
+                    {/* Image */}
                     <div className="absolute inset-0">
                         <Image
-                            src={imgWhisk}
+                            src={imgHeroRight}
                             alt="Business Professional"
                             fill
-                            className="object-cover object-center mix-blend-multiply"
+                            className="object-cover mix-blend-multiply"
                             priority
                         />
                     </div>
                 </div>
 
                 {/* Floating Card */}
-                <div className="absolute bottom-[32px] left-0 bg-white rounded-[22px] p-[22px] flex flex-col gap-[7px] shadow-[0_8px_10px_1px_rgba(0,0,0,0.14)] z-10 max-w-[370px]">
-                    <h3 className="font-semibold text-[25px] tracking-[-0.25px] leading-[40px]">
+                <div className="absolute bottom-[96px] left-[0px] xl:left-[16px] bg-white rounded-[21.6px] p-[21.6px] flex flex-col gap-[7.2px] shadow-[0_8px_10px_0_rgba(0,0,0,0.14)] z-10 w-[369.2px]">
+                    <p className="font-semibold tracking-[-0.252px] text-[25.2px] leading-[40.32px] w-[326px]">
                         <span className="font-['Protest_Riot',cursive] text-[#2446a8]">Smart Invoicing - </span>
                         <span className="font-['Inter'] text-[#122354]">Create, Remind &amp; Track with Ease</span>
-                    </h3>
-                    <p className="font-['Inter'] font-medium text-[14.4px] leading-[23px] tracking-[-0.45px] text-[#767d92]">
+                    </p>
+                    <p className="font-['Inter'] font-medium text-[14.4px] leading-[23.04px] tracking-[-0.45px] text-[#767d92]">
                         BizPilot helps business owners mange, track and simplify their finances
                     </p>
                 </div>
