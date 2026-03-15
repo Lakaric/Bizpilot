@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 
 const imgHeroRight = "/assets/hero/sign-up.png";
 const imgLogo = "/assets/Bizbot-logo.png";
@@ -55,7 +56,15 @@ export default function SignUp() {
                             <div className="flex flex-col gap-[20px] w-full">
                                 <div className="flex flex-col gap-[16px] w-full">
                                     {/* Continue with Google */}
-                                    <button className="w-full h-[56px] flex items-center justify-center gap-[8px] bg-[#eaeefa] hover:bg-[#dde3f7] transition-colors rounded-[8px]">
+                                    <button
+                                        onClick={() =>
+                                            authClient.signIn.social({
+                                                provider: "google",
+                                                callbackURL: "/dashboard",
+                                            })
+                                        }
+                                        className="w-full h-[56px] flex items-center justify-center gap-[8px] bg-[#eaeefa] hover:bg-[#dde3f7] transition-colors rounded-[8px]"
+                                    >
                                         <div className="w-[24px] h-[24px] relative">
                                             <Image src={imgGoogle} alt="Google" fill className="object-contain" />
                                         </div>
