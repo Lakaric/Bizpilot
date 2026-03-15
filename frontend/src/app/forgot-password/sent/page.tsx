@@ -2,11 +2,38 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { authClient } from "@/lib/auth-client";
+
+const RESEND_COOLDOWN = 60;
 
 function ResetLinkSentContent() {
     const searchParams = useSearchParams();
     const email = searchParams.get("email") || "your email";
+    const [cooldown, setCooldown] = useState(0);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        if (cooldown <= 0) return;
+        const timer = setTimeout(() => setCooldown((c) => c - 1), 1000);
+        return () => clearTimeout(timer);
+    }, [cooldown]);
+
+    const handleResend = async () => {
+        if (cooldown > 0 || email === "your email") return;
+        setCooldown(RESEND_COOLDOWN);
+        setError("");
+
+        const { error: resendError } = await authClient.emailOtp.sendVerificationOtp({
+            email,
+            type: "forget-password",
+        });
+
+        if (resendError) {
+            setError(resendError.message ?? "Failed to resend. Please try again.");
+            setCooldown(0);
+        }
+    };
 
     return (
         <div className="min-h-screen w-full bg-white flex items-center justify-center p-6 sm:p-[100px]">
@@ -27,7 +54,7 @@ function ResetLinkSentContent() {
                             Check your email
                         </h1>
                         <p className="font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#767d92] text-center max-w-[371px]">
-                            We sent a password reset link to {email}
+                            We sent a password reset code to {email}
                         </p>
                     </div>
                 </div>
@@ -49,11 +76,25 @@ function ResetLinkSentContent() {
                         {/* Didn't receive? */}
                         <div className="flex items-center justify-center gap-[4px] font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px]">
                             <span className="text-[#09122a]">Didn&apos;t receive the email?</span>
-                            <button className="text-[#2446a8] hover:underline cursor-pointer bg-transparent border-none font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px]">
-                                Click to resend
+                            <button
+                                onClick={handleResend}
+                                disabled={cooldown > 0}
+                                className={`bg-transparent border-none font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] transition-colors ${
+                                    cooldown > 0
+                                        ? "text-[#adb1be] cursor-not-allowed"
+                                        : "text-[#2446a8] hover:underline cursor-pointer"
+                                }`}
+                            >
+                                {cooldown > 0 ? `Resend in ${cooldown}s` : "Click to resend"}
                             </button>
                         </div>
                     </div>
+
+                    {error && (
+                        <p className="font-['Inter'] text-[14px] text-[#d21212] text-center">
+                            {error}
+                        </p>
+                    )}
 
                     {/* Back to Sign In */}
                     <Link

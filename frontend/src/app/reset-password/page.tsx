@@ -1,13 +1,72 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { authClient } from "@/lib/auth-client";
 
 export default function ResetPassword() {
+    const router = useRouter();
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [resetEmail, setResetEmail] = useState("");
+    const [resetOtp, setResetOtp] = useState("");
+
+    useEffect(() => {
+        const email = sessionStorage.getItem("bp_reset_email");
+        const otp = sessionStorage.getItem("bp_reset_otp");
+        if (!email || !otp) {
+            router.replace("/forgot-password");
+            return;
+        }
+        setResetEmail(email);
+        setResetOtp(otp);
+    }, [router]);
+
+    const passwordValid = password.length >= 8;
+    const passwordsMatch = password === confirmPassword;
+    const canSubmit = passwordValid && passwordsMatch && !loading && resetEmail && resetOtp;
+
+    const handleSubmit = async () => {
+        if (!canSubmit) return;
+
+        if (!passwordsMatch) {
+            setError("Passwords do not match.");
+            return;
+        }
+        if (!passwordValid) {
+            setError("Password must be at least 8 characters.");
+            return;
+        }
+
+        setLoading(true);
+        setError("");
+
+        try {
+            const { error: resetError } = await authClient.emailOtp.resetPassword({
+                email: resetEmail,
+                otp: resetOtp,
+                password,
+            });
+
+            if (resetError) {
+                setError(resetError.message ?? "Failed to reset password. Please try again.");
+                setLoading(false);
+                return;
+            }
+
+            sessionStorage.removeItem("bp_reset_email");
+            sessionStorage.removeItem("bp_reset_otp");
+            router.push("/reset-password/success");
+        } catch {
+            setError("Something went wrong. Please try again.");
+            setLoading(false);
+        }
+    };
 
     const EyeOffIcon = () => (
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -24,6 +83,14 @@ export default function ResetPassword() {
             <circle cx="12" cy="12" r="3" />
         </svg>
     );
+
+    if (!resetEmail) {
+        return (
+            <div className="min-h-screen w-full bg-white flex items-center justify-center">
+                <div className="w-[40px] h-[40px] border-4 border-[#eaeefa] border-t-[#2446a8] rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen w-full bg-white flex items-center justify-center p-6 sm:p-[100px]">
@@ -63,7 +130,7 @@ export default function ResetPassword() {
                                     <input
                                         type={showPassword ? "text" : "password"}
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange={(e) => { setPassword(e.target.value); setError(""); }}
                                         placeholder="Enter Password"
                                         className="w-full h-[50px] px-[12px] py-[10px] pr-[48px] border border-[#eaeaeb] rounded-[8px] bg-transparent font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#09122a] placeholder:text-[#d6d7dc] focus:outline-none focus:border-[#2446a8] transition-colors"
                                     />
@@ -91,7 +158,7 @@ export default function ResetPassword() {
                                 <input
                                     type={showConfirmPassword ? "text" : "password"}
                                     value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    onChange={(e) => { setConfirmPassword(e.target.value); setError(""); }}
                                     placeholder="Enter Password"
                                     className="w-full h-[50px] px-[12px] py-[10px] pr-[48px] border border-[#eaeaeb] rounded-[8px] bg-transparent font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#09122a] placeholder:text-[#d6d7dc] focus:outline-none focus:border-[#2446a8] transition-colors"
                                 />
@@ -107,12 +174,24 @@ export default function ResetPassword() {
                         </div>
                     </div>
 
+                    {error && (
+                        <p className="font-['Inter'] text-[14px] text-[#d21212] text-center">
+                            {error}
+                        </p>
+                    )}
+
                     {/* Reset Button + Back Link */}
                     <div className="flex flex-col gap-[4px] w-full">
                         <button
-                            className="w-full h-[56px] flex items-center justify-center rounded-[8px] bg-[#2446a8] hover:bg-[#1d3a8e] transition-colors font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-white"
+                            disabled={!canSubmit}
+                            onClick={handleSubmit}
+                            className={`w-full h-[56px] flex items-center justify-center rounded-[8px] font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] transition-colors ${
+                                canSubmit
+                                    ? "bg-[#2446a8] hover:bg-[#1d3a8e] text-white cursor-pointer"
+                                    : "bg-[#e4e5e9] text-[#adb1be] cursor-not-allowed"
+                            }`}
                         >
-                            Reset Password
+                            {loading ? "Resetting..." : "Reset Password"}
                         </button>
 
                         {/* Back to Sign In */}

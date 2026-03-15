@@ -1,12 +1,41 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
 
 export default function ForgotPassword() {
+    const router = useRouter();
     const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    const isValid = email.trim().length > 0;
+    const isValid = email.trim().length > 0 && !loading;
+
+    const handleSubmit = async () => {
+        if (!email.trim()) return;
+        setLoading(true);
+        setError("");
+
+        try {
+            const { error: sendError } = await authClient.emailOtp.sendVerificationOtp({
+                email: email.trim(),
+                type: "forget-password",
+            });
+
+            if (sendError) {
+                setError(sendError.message ?? "Failed to send reset code. Please try again.");
+                setLoading(false);
+                return;
+            }
+
+            router.push(`/forgot-password/verify?email=${encodeURIComponent(email.trim())}`);
+        } catch {
+            setError("Something went wrong. Please try again.");
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="min-h-screen w-full bg-white flex items-center justify-center p-6 sm:p-[100px]">
@@ -42,24 +71,31 @@ export default function ForgotPassword() {
                         <input
                             type="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter email or phone number"
+                            onChange={(e) => { setEmail(e.target.value); setError(""); }}
+                            placeholder="Enter your email address"
                             className="w-full h-[50px] px-[12px] py-[10px] border border-[#eaeaeb] rounded-[8px] bg-transparent font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#09122a] placeholder:text-[#d6d7dc] focus:outline-none focus:border-[#2446a8] transition-colors"
-                        required
+                            required
                         />
                     </div>
+
+                    {error && (
+                        <p className="font-['Inter'] text-[14px] text-[#d21212] text-center">
+                            {error}
+                        </p>
+                    )}
 
                     {/* Continue Button + Back Link */}
                     <div className="flex flex-col gap-[4px] w-full">
                         <button
                             disabled={!isValid}
+                            onClick={handleSubmit}
                             className={`w-full h-[56px] flex items-center justify-center rounded-[8px] font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-center transition-colors ${
                                 isValid
                                     ? "bg-[#2446a8] hover:bg-[#1d3a8e] text-white cursor-pointer"
                                     : "bg-[#e4e5e9] text-[#adb1be] cursor-not-allowed"
                             }`}
                         >
-                            Continue
+                            {loading ? "Sending..." : "Continue"}
                         </button>
 
                         {/* Back to Sign In */}
