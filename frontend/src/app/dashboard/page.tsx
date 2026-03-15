@@ -3,6 +3,7 @@
 import React from 'react'
 import StatsCard from '@/components/dashboard/StatsCard'
 import ChecklistCard from '@/components/dashboard/ChecklistCard'
+import { useAuthStore } from '@/store/authStore'
 
 // ----------------------------------------------------------------------
 // Icons for Stats
@@ -54,12 +55,13 @@ const BookOpenChecklistIcon = () => (
 );
 
 const DashboardPage = () => {
+  const { user } = useAuthStore()
   return (
     <div className="flex flex-col gap-[24px] w-full overflow-hidden">
       {/* Welcome Section */}
       <div className="flex flex-col gap-0 w-full">
         <h1 className="font-['Inter'] font-semibold text-[24px] leading-[38.4px] tracking-[-0.24px] text-[#122354]">
-          Welcome to BizPilot 👋
+          Welcome {user?.name}
         </h1>
         <p className="font-['Inter'] font-medium text-[16px] leading-[25.6px] tracking-[-0.5px] text-[#767d92]">
           Let’s get your Bizpilot  workspace ready.
